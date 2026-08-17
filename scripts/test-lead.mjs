@@ -1,0 +1,186 @@
+#!/usr/bin/env node
+/**
+ * ยิง lead ปลอมเข้าระบบ แล้วเช็คว่าเข้า HubSpot จริง (Contact + Deal + deal properties)
+ *
+ *   node scripts/test-lead.mjs --dry-run                 ดู payload ที่จะส่ง
+ *   node scripts/test-lead.mjs                           ยิงเข้า http://localhost:3000
+ *   node scripts/test-lead.mjs --url https://xxx.vercel.app
+ *   node scripts/test-lead.mjs --project page_b          ระบุหน้า (ถ้ามีหลายหน้าใน public_pages/)
+ *   node scripts/test-lead.mjs --sku GLOW-ALLIN --checkout
+ *
+ * ต้องรัน `vercel dev` ที่ root ของ repo ไว้ก่อน (ถ้าทดสอบ local)
+ */
+import { basename, dirname } from 'node:path';
+import {
+  loadEnv, parseArgs, readCatalog, info, ok, warn, fail, c, dryRunBanner,
+  hubspotAccount,
+} from './lib/util.mjs';
+
+loadEnv();
+const args = parseArgs();
+const dry = Boolean(args['dry-run']);
+const { path: catalogPath, catalog } = readCatalog(args);
+
+const rawBase = args.url || process.env.SITE_URL;
+if (!rawBase) {
+  fail(
+    'ไม่รู้ว่าจะยิงไปที่ URL ไหน\n' +
+      'ใส่ --url ตอนรัน:  node scripts/test-lead.mjs --url https://[project].vercel.app\n' +
+      '(หรือตั้ง SITE_URL ใน env ก็ได้ แต่ค่า env ถูก copy ตอน session เริ่ม — ใส่ --url ง่ายกว่า)\n' +
+      'ทำบนเครื่องตัวเองที่รัน vercel dev อยู่:  --url http://localhost:3000',
+  );
+}
+const base = String(rawBase).replace(/\/$/, '');
+const hero = catalog.offers.find((o) => o.hero) || catalog.offers[0];
+const sku = String(args.sku || hero.sku);
+const offer = catalog.offers.find((o) => o.sku === sku);
+if (!offer) fail(`ไม่พบ sku ${sku} ใน catalog.json`);
+
+// slug ของหน้า = ชื่อโฟลเดอร์ใน public_pages/ (API ใช้เลือก catalog ของหน้านั้น)
+const page = basename(dirname(catalogPath));
+
+const stamp = Date.now();
+const payload = {
+  page,
+  name: args.name || `ทดสอบ ระบบ ${String(stamp).slice(-4)}`,
+  email: args.email || `test+${stamp}@example.com`,
+  phone: args.phone || '0812345678',
+  sku,
+  // optional — ส่งเฉพาะถ้าหน้านั้นมีช่องให้เลือก
+  ...(args.location ? { location: args.location } : {}),
+  ...(args.service ? { service: args.service } : {}),
+};
+
+// ── สรุปก่อนยิง ────────────────────────────────────────────────
+dryRunBanner(dry);
+info(`${c.bold('Test lead')} → ${base}/api/lead   (page: ${c.bold(page)} → ${base}/${page})\n`);
+info(c.dim(JSON.stringify(payload, null, 2)));
+info(`\nคาดว่าจะได้: Contact ใหม่ + Deal "${catalog.brand} — ${offer.name} — ${payload.name}"`);
+info(`  pipeline: ${catalog.hubspot.pipeline} · stage: ${catalog.hubspot.stageOnLead} · amount: ${offer.price} ${catalog.currency}`);
+info(`  ${catalog.propertyPrefix}_package = ${offer.sku}`);
+if (payload.location) info(`  ${catalog.propertyPrefix}_location = ${payload.location}`);
+info(`  ${catalog.propertyPrefix}_source_page = ${page}`);
+
+if (dry) {
+  info(c.yellow('\ndry run — ไม่มีการยิง request'));
+  process.exit(0);
+}
+
+// ── ยิง /api/lead ──────────────────────────────────────────────
+info('');
+let lead;
+try {
+  const res = await fetch(`${base}/api/lead`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  const text = await res.text();
+  let json = null;
+  try { json = JSON.parse(text); } catch { /* ไม่ใช่ JSON */ }
+
+  if (!res.ok || !json?.ok) {
+    if (json?.errors) {
+      warn(`validation ไม่ผ่าน: ${JSON.stringify(json.errors)}`);
+    }
+    fail(
+      `/api/lead ตอบ ${res.status}\n${json?.error || text.slice(0, 300)}\n\n` +
+        'เช็ค: vercel dev รันอยู่ที่ root ของ repo ไหม · .env มี HUBSPOT_PRIVATE_APP_TOKEN ไหม\n' +
+        `เช็คว่า catalog ของหน้า "${page}" อ่านได้: node scripts/build-site.mjs --dry-run`,
+    );
+  }
+
+  lead = json;
+  ok(`lead เข้าระบบแล้ว — contactId ${lead.contactId} (${lead.contactCreated ? 'สร้างใหม่' : 'อัปเดตของเดิม'}) · dealId ${lead.dealId}`);
+} catch (err) {
+  fail(`ยิง /api/lead ไม่สำเร็จ — ${err.message}\nรัน vercel dev ที่ root ของ repo ก่อน`);
+}
+
+// ── verify ใน HubSpot โดยตรง ───────────────────────────────────
+const token = process.env.HUBSPOT_PRIVATE_APP_TOKEN;
+if (!token) {
+  warn('ไม่มี HUBSPOT_PRIVATE_APP_TOKEN ใน .env — ข้ามการ verify ฝั่ง HubSpot');
+} else {
+  const p = catalog.propertyPrefix;
+  const props = [
+    'dealname', 'pipeline', 'dealstage', 'amount',
+    `${p}_package`, `${p}_location`, `${p}_service_interest`, `${p}_source_page`,
+  ];
+
+  try {
+    const res = await fetch(
+      `https://api.hubapi.com/crm/v3/objects/deals/${lead.dealId}` +
+        `?properties=${props.join(',')}&associations=contacts`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    if (!res.ok) throw new Error(`HubSpot ตอบ ${res.status}`);
+    const deal = await res.json();
+
+    info(`\n${c.bold('ตรวจ deal ใน HubSpot')}`);
+    for (const key of props) {
+      const val = deal.properties?.[key];
+      info(`  ${key.padEnd(26)} ${val ? c.green(val) : c.yellow('(ว่าง)')}`);
+    }
+
+    const linked = deal.associations?.contacts?.results?.some((r) => r.id === lead.contactId);
+    info(`  ${'associated contact'.padEnd(26)} ${linked ? c.green('ผูกแล้ว ✓') : c.red('ไม่ได้ผูก ✗')}`);
+
+    const expectAmount = String(offer.price);
+    if (deal.properties?.amount && Number(deal.properties.amount) !== Number(expectAmount)) {
+      warn(`amount ไม่ตรง catalog (ได้ ${deal.properties.amount} คาดว่า ${expectAmount})`);
+    }
+    if (!linked) warn('deal ไม่ได้ผูกกับ contact — เช็ค associationTypeId ใน catalog.json (ต้องเป็น 3)');
+
+    // stage ไม่ตรง = deployment ยังใช้ catalog เก่า (ลืม commit/push หลังรัน setup-hubspot)
+    // ไม่ใช่ HubSpot พัง — บอกให้ตรงจุด ไม่งั้นไล่ผิดทางยาว
+    const gotStage = deal.properties?.dealstage;
+    const wantStage = catalog.hubspot.stageOnLead;
+    if (gotStage && wantStage && gotStage !== wantStage) {
+      warn(
+        `dealstage ที่ได้ (${gotStage}) ไม่ตรง stageOnLead ใน catalog.json (${wantStage})\n` +
+          `  แปลว่า deployment ที่ ${base} ยังใช้ catalog ชุดเก่า → commit + push catalog.json แล้วรอ deploy ใหม่\n` +
+          `  หรือถ้าเพิ่งแก้ pipeline: node scripts/setup-hubspot.mjs --plan เพื่อดูสเตจจริงใน HubSpot`,
+      );
+    }
+    const gotPipeline = deal.properties?.pipeline;
+    if (gotPipeline && catalog.hubspot.pipeline && gotPipeline !== String(catalog.hubspot.pipeline)) {
+      warn(`pipeline ที่ได้ (${gotPipeline}) ไม่ตรง catalog.json (${catalog.hubspot.pipeline}) — เหตุผลเดียวกับข้อบน`);
+    }
+  } catch (err) {
+    warn(`verify ไม่สำเร็จ — ${err.message}`);
+  }
+
+  const account = await hubspotAccount();
+  if (account) {
+    info(
+      c.dim(
+        `\nเปิดดู: https://${account.uiDomain}/contacts/${account.portalId}/deal/${lead.dealId}`,
+      ),
+    );
+  }
+}
+
+// ── ทดสอบ checkout ต่อ (optional) ──────────────────────────────
+if (args.checkout) {
+  info(`\n${c.bold('ทดสอบ /api/checkout')}`);
+  try {
+    const res = await fetch(`${base}/api/checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page, sku, dealId: lead.dealId, email: payload.email }),
+    });
+    const json = await res.json();
+    if (!res.ok || !json.ok) {
+      warn(`checkout ไม่สำเร็จ: ${json.error || res.status}`);
+    } else {
+      ok('สร้าง Checkout Session แล้ว');
+      info(`  เปิดลิงก์นี้แล้วจ่ายด้วยบัตรทดสอบ 4242 4242 4242 4242:\n  ${json.url}`);
+      info(c.dim(`  จ่ายเสร็จ deal ต้องย้ายไปสเตจ ${catalog.hubspot.stageOnPaid || '(ยังไม่ได้ตั้ง stageOnPaid)'} (ต้องมี webhook ทำงานด้วย)`));
+    }
+  } catch (err) {
+    warn(`checkout error — ${err.message}`);
+  }
+}
+
+info(`\n${c.dim('ลบข้อมูลทดสอบ: ค้น email ' + payload.email + ' ใน HubSpot แล้วลบ contact/deal ทิ้ง')}`);

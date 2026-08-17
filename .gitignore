@@ -1,0 +1,30 @@
+# secrets — ห้ามหลุดเข้า git เด็ดขาด
+.env
+.env.*
+!.env.example
+*.env
+!example.env
+
+# node
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# vercel
+.vercel/
+.vercel
+
+# public/ ที่ root = ผลผลิตของ scripts/build-site.mjs (ประกอบจาก public_pages/*/public/)
+# ห้ามสับสนกับ public_pages/[slug]/public/ ซึ่งเป็นของจริงที่ต้อง commit
+/public/
+
+# generated assets (gen ใหม่ได้จาก assets-plan.md เสมอ)
+public_pages/*/public/assets/generated/
+context/brand-identity/moodboard.png
+
+# os / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
