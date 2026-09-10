@@ -3,9 +3,9 @@
 | Stop | สถานะ | ไฟล์ |
 |---|---|---|
 | 0 เตรียม folder + brief | ✅ เสร็จ | `salepage-brief.md` |
-| 1 Offer building | ✅ เขียนแล้ว — **รอ Gate B** | `offer-building.md` |
-| 2 Design guide + wireframe | ⬜ | |
-| 3 Copywriting | ⬜ | |
+| 1 Offer building | ✅ Gate B ผ่าน | `offer-building.md` |
+| 2 Design guide + wireframe | ✅ เสร็จ | `design-guide.md` + `wireframe-copywriting.md` (ส่วน A) |
+| 3 Copywriting | ✅ เขียนแล้ว — **รอ Gate C** | `wireframe-copywriting.md` (ส่วน B) |
 | 4 Assets prep | ⬜ | |
 | 5a Build | ⬜ | |
 | 5b Preview + CRO | ⬜ | |
