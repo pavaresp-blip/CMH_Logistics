@@ -1,4 +1,4 @@
-# Assets Plan (executed) — หน้า import-china
+# Assets Manifest — หน้า import-china
 
 > **source ทั้งหมด = Pixabay** (Pixabay Content License · ใช้เชิงพาณิชย์ได้ ไม่ต้องให้เครดิต)
 > **ไม่ได้ใช้ KIE.ai** — key ที่ได้มาจากคลาสตอบ 401 (ดู `context/brand-identity/moodboard-prompt.txt`)

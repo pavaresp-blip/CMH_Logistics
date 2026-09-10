@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ได้รับข้อมูลแล้ว — CMH Logistics</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/import-china/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500&display=swap">
+<style>
+  :root{--bg:#08192A;--surface:#0D2338;--line:#1D3B58;--steel:#2F6F9F;
+        --accent:#E8730C;--accent-2:#F5A13A;--ink:#EAF1F8;--ink-muted:#9DB2C7}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Thai",sans-serif;
+       line-height:1.65;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;
+        padding:48px 40px;max-width:560px;text-align:center}
+  .tick{width:64px;height:64px;border-radius:50%;background:var(--accent);color:#1A0D00;
+        display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 24px;font-weight:700}
+  h1{font-family:"Bai Jamjuree",sans-serif;font-weight:700;font-size:32px;line-height:1.2;margin-bottom:14px}
+  p{color:var(--ink-muted);margin-bottom:12px}
+  .contact{margin-top:28px;padding-top:24px;border-top:1px solid var(--line);font-size:15px}
+  .contact b{color:var(--ink);font-family:"Bai Jamjuree",sans-serif}
+  a{color:var(--accent-2)}
+  .back{display:inline-block;margin-top:26px;border:1.5px solid var(--steel);color:var(--ink);
+        text-decoration:none;padding:13px 28px;border-radius:6px;font-weight:500}
+  .back:hover{background:#0F2C47}
+  @media (max-width:480px){.card{padding:36px 22px}h1{font-size:26px}}
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="tick" aria-hidden="true">✓</div>
+    <h1>ได้รับข้อมูลของคุณแล้ว</h1>
+    <p>ทีมงานจะติดต่อกลับเพื่อขอรายละเอียดสินค้า แล้วออกใบเสนอราคาให้</p>
+    <p>ระหว่างนี้แอดไลน์ไว้ก่อนได้เลย จะได้คุยต่อได้สะดวก</p>
+    <div class="contact">
+      LINE <b>@CMHlogistics</b> &nbsp;·&nbsp; โทร <b>064-554-6655</b>
+    </div>
+    <a class="back" href="/import-china">กลับไปหน้าหลัก</a>
+  </main>
+  <script src="/import-china/config.js"></script>
+  <script>
+    // generate_lead ยิงไปแล้วตอนฟอร์มสำเร็จในหน้าหลัก — หน้านี้แค่ยืนยันผล
+    document.title = 'ได้รับข้อมูลแล้ว — ' + (window.SITE_CONFIG?.brand || 'CMH Logistics');
+  </script>
+</body>
+</html>

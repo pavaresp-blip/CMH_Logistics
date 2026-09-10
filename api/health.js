@@ -72,9 +72,15 @@ function stageConfigFor(root, slugs) {
 /** ตัวแปรที่ api/ ต้องใช้ตอน runtime — เช็คแค่ว่ามีค่าหรือไม่มี */
 const REQUIRED_ENV = [
   'HUBSPOT_PRIVATE_APP_TOKEN',
-  'STRIPE_SECRET_KEY',
-  'STRIPE_WEBHOOK_SECRET',
 ];
+
+/**
+ * โปรเจกต์นี้ **ไม่มีขั้นชำระเงิน** — CMH Logistics เป็น freight forwarder ที่คิดราคาเป็น
+ * quote รายเคส (ตามน้ำหนัก/ปริมาตร/เส้นทาง) หน้าเพจจึงจบที่ฟอร์มขอใบเสนอราคา
+ * ไม่มี api/checkout.js และไม่มี api/stripe-webhook.js
+ * → STRIPE_SECRET_KEY / STRIPE_WEBHOOK_SECRET จึงไม่ใช่ตัวแปรที่ต้องมี
+ * ถ้าวันหลังเปิดขายผ่านเว็บจริง ให้ย้ายสองตัวนั้นกลับเข้า REQUIRED_ENV
+ */
 
 /**
  * base URL ของหน้าเพจ — ไม่ต้องตั้ง SITE_URL ใน Vercel
