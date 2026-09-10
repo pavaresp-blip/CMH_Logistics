@@ -1,0 +1,100 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap">
+<style>
+  :root{
+    --navy-900:#08192A; --navy-700:#0F2C47; --steel:#2F6F9F;
+    --amber:#E8730C; --amber-2:#F5A13A;
+    --ink:#0B1622; --muted:#7A8C9E; --surface:#F2F5F8; --line:#1D3B58;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1080px;height:1920px;background:var(--navy-900);color:#EAF1F8;
+       font-family:"IBM Plex Sans Thai",sans-serif;overflow:hidden;position:relative}
+  .pad{padding:56px 56px 48px}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px}
+  .brand{font-family:"Bai Jamjuree",sans-serif;font-weight:700;font-size:60px;letter-spacing:-.02em;line-height:1}
+  .brand span{color:var(--amber)}
+  .sub{font-size:19px;color:#9DB2C7;margin-top:10px;font-weight:300;letter-spacing:.02em}
+  .stamp{text-align:right;font-family:"Bai Jamjuree",sans-serif;font-size:13px;letter-spacing:.22em;
+         color:var(--amber-2);text-transform:uppercase;line-height:1.9}
+  .rule{height:3px;background:linear-gradient(90deg,var(--amber) 0%,var(--amber) 18%,var(--line) 18%);margin-bottom:26px}
+
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:150px;gap:14px}
+  .cell{border-radius:6px;overflow:hidden;position:relative;background:var(--navy-700)}
+  .cell img{width:100%;height:100%;object-fit:cover;display:block}
+  .cell::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(8,25,42,.72));}
+  .cap{position:absolute;left:14px;bottom:11px;z-index:2;font-family:"Bai Jamjuree",sans-serif;
+       font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+  .c-hero{grid-column:span 6;grid-row:span 3}
+  .c-a{grid-column:span 2;grid-row:span 2}
+  .c-b{grid-column:span 2;grid-row:span 2}
+  .c-c{grid-column:span 2;grid-row:span 2}
+  .c-d{grid-column:span 3;grid-row:span 2}
+  .c-e{grid-column:span 3;grid-row:span 2}
+  .tint{position:absolute;inset:0;z-index:1;background:rgba(15,44,71,.30);mix-blend-mode:multiply}
+
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px}
+  .panel{background:#0D2338;border:1px solid var(--line);border-radius:8px;padding:22px 24px}
+  .plabel{font-family:"Bai Jamjuree",sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+          color:var(--amber-2);margin-bottom:16px}
+  .sw{display:flex;gap:9px}
+  .sw div{flex:1}
+  .chip{height:56px;border-radius:5px;border:1px solid rgba(255,255,255,.14)}
+  .hex{font-family:"Bai Jamjuree",sans-serif;font-size:11px;color:#A9BDD1;margin-top:7px;letter-spacing:.04em}
+  .typeH{font-family:"Bai Jamjuree",sans-serif;font-weight:700;font-size:38px;line-height:1.14;margin-bottom:4px}
+  .typeMeta{font-size:12px;color:var(--muted);letter-spacing:.05em;margin-bottom:14px}
+  .typeB{font-family:"IBM Plex Sans Thai",sans-serif;font-weight:300;font-size:17px;line-height:1.62;color:#C6D5E4}
+  .kw{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+  .kw span{border:1px solid var(--line);color:#A9BDD1;border-radius:999px;padding:8px 17px;font-size:14px;font-weight:300}
+  .kw span.on{background:var(--amber);border-color:var(--amber);color:#1A0D00;font-weight:600}
+  .foot{position:absolute;left:56px;right:56px;bottom:26px;display:flex;justify-content:space-between;
+        font-size:12px;color:#5E7governance}
+  .foot{color:#61788E;letter-spacing:.04em}
+</style></head><body><div class="pad">
+
+  <div class="head">
+    <div>
+      <div class="brand">CMH<span>.</span>LOGISTICS</div>
+      <div class="sub">นำเข้าจีน–ไทย เต็มตู้ · รวมตู้ · ถูกต้องตามกฎหมาย</div>
+    </div>
+    <div class="stamp">Freight Forwarder<br>FCL · LCL · Customs<br>Est. 2020</div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="grid">
+    <div class="cell c-hero"><img src="img/hero.jpg"><div class="tint"></div><div class="cap">Container Terminal — มุมสูง เห็นระบบ</div></div>
+    <div class="cell c-a"><img src="img/crane.jpg"><div class="tint"></div><div class="cap">Crane</div></div>
+    <div class="cell c-b"><img src="img/yard.jpg"><div class="tint"></div><div class="cap">Yard</div></div>
+    <div class="cell c-c"><img src="img/china.jpg"><div class="tint"></div><div class="cap">Sea Freight · จีน→ไทย</div></div>
+    <div class="cell c-d"><img src="img/team.jpg"><div class="tint"></div><div class="cap">ทีมงาน · เอกสารครบ</div></div>
+    <div class="cell c-e"><img src="img/truck.jpg"><div class="tint"></div><div class="cap">Door-to-Door</div></div>
+  </div>
+
+  <div class="row">
+    <div class="panel">
+      <div class="plabel">Palette</div>
+      <div class="sw">
+        <div><div class="chip" style="background:#08192A"></div><div class="hex">#08192A</div></div>
+        <div><div class="chip" style="background:#0F2C47"></div><div class="hex">#0F2C47</div></div>
+        <div><div class="chip" style="background:#2F6F9F"></div><div class="hex">#2F6F9F</div></div>
+        <div><div class="chip" style="background:#E8730C"></div><div class="hex">#E8730C</div></div>
+        <div><div class="chip" style="background:#F5A13A"></div><div class="hex">#F5A13A</div></div>
+        <div><div class="chip" style="background:#F2F5F8"></div><div class="hex">#F2F5F8</div></div>
+      </div>
+      <div class="kw">
+        <span class="on">ถูกต้อง</span><span>มืออาชีพ</span><span>มั่นคง</span><span>ตรวจสอบได้</span><span>เป็นระบบ</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="plabel">Typography</div>
+      <div class="typeH">นำเข้าถูกต้อง<br>เอกสารครบ</div>
+      <div class="typeMeta">HEADLINE — Bai Jamjuree 700</div>
+      <div class="typeB">ใบขนสินค้าในนามบริษัทของคุณ ใช้สิทธิ์ภาษีได้เต็มจำนวน ดูแลครบตั้งแต่ต้นทางจีนถึงหน้าโรงงาน</div>
+      <div class="typeMeta" style="margin-top:12px;margin-bottom:0">BODY — IBM Plex Sans Thai 300</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>MOODBOARD v1 · Grid / Bento · Navy + Amber</span>
+    <span>ภาพประกอบ: Pixabay Content License</span>
+  </div>
+</div></body></html>

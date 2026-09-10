@@ -1,0 +1,37 @@
+CMH LOGISTICS — MOODBOARD RECIPE (v1)
+=====================================
+สร้างเมื่อ: 2026-09-10  ·  ทิศทาง: Grid (Bento)  ·  โทน: Navy + Amber  ·  9:16 (1080x1920)
+
+⚠️ moodboard นี้ "ไม่ได้ใช้ AI generate" (KIE.ai key ที่ได้มาจากคลาสตอบ 401 ใช้ไม่ได้)
+   จึงประกอบจาก "ภาพถ่ายจริง" จาก Pixabay แทน — ซึ่งเหมาะกับ freight forwarder มากกว่า
+   เพราะลูกค้า B2B จับภาพ AI ได้ และภาพท่าเรือ/ตู้จริงน่าเชื่อถือกว่า
+
+วิธี regenerate
+---------------
+1. ดาวน์โหลดรูปตาม Pixabay ID ด้านล่างลงใน ./img/[slot].jpg
+2. เปิด moodboard.html (อยู่โฟลเดอร์เดียวกัน) ที่อ้าง ./img/*.jpg
+3. ถ่ายด้วย Playwright:
+   NODE_PATH=$(npm root -g) node -e '
+   const {chromium}=require("playwright");
+   (async()=>{const b=await chromium.launch();
+    const p=await b.newPage({viewport:{width:1080,height:1920}});
+    await p.goto("file://"+process.cwd()+"/moodboard.html",{waitUntil:"networkidle"});
+    await p.waitForTimeout(1500); await p.screenshot({path:"moodboard.png"}); await b.close();})();'
+
+รูปที่ใช้ (Pixabay Content License — ใช้เชิงพาณิชย์ได้)
+------------------------------------------------------
+slot        Pixabay ID   ผู้ถ่าย          ใช้ทำอะไร
+hero        2568196      StockSnap        ลานตู้มุมสูง — ภาพหลัก สื่อ "ระบบ/ตรวจสอบได้"
+crane       1097206      patrickbaum      เครนกับเรือที่ท่า
+yard        1601917      2427999          ตู้คอนเทนเนอร์เรียงซ้อน
+china       105596       Peter_Lindenau   เรือคอนเทนเนอร์กลางทะเล (จีน→ไทย)
+team        2284501      mwitt1337        ทีมงานมุมสูง ทำงานกับเอกสาร
+truck       2946821      6734180          รถบรรทุก door-to-door
+(สำรอง ไม่ได้ใช้: warehouse 4395773 · docs 3196481)
+
+หลักการคัดรูป (ใช้ซ้ำตอนหาภาพหน้าเพจ)
+--------------------------------------
+✅ เอา: ท่าเรือ ตู้คอนเทนเนอร์ เครน เรือขนส่ง คลัง รถบรรทุก · มุมสูง/มุมกว้าง · แสงธรรมชาติ
+        คนกำลัง "ทำงานจริง" (ก้มดูเอกสาร/หน้าจอ)
+❌ ห้าม: คนยิ้มใส่กล้องแบบ stock · เรือสำราญ/รีสอร์ต/ท่องเที่ยว · กราฟิก 3D เรนเดอร์
+        ไอคอนธุรกิจแบบ clip-art · ภาพ AI ที่ดูออก · โลโก้สายเรือของจริงเด่นจนดูเหมือนอ้างว่าเป็นพาร์ตเนอร์
