@@ -1,0 +1,152 @@
+{
+  "brand": "CMH Logistics",
+  "currency": "THB",
+  "slug": "import-china",
+  "propertyPrefix": "cmh",
+  "locations": [
+    {
+      "id": "lcb",
+      "label": "ท่าเรือแหลมฉบัง (LCB)"
+    },
+    {
+      "id": "pat",
+      "label": "ท่าเรือกรุงเทพ (PAT)"
+    },
+    {
+      "id": "door",
+      "label": "ส่งถึงหน้าโรงงาน/โกดัง"
+    },
+    {
+      "id": "undecided",
+      "label": "ยังไม่ระบุ / ขอคำแนะนำ"
+    }
+  ],
+  "services": [
+    {
+      "id": "fcl",
+      "label": "นำเข้าเต็มตู้ (FCL)"
+    },
+    {
+      "id": "lcl",
+      "label": "นำเข้ารวมตู้ (LCL)"
+    },
+    {
+      "id": "customs",
+      "label": "พิธีการศุลกากร + เอกสาร"
+    },
+    {
+      "id": "door_to_door",
+      "label": "Door-to-Door + คลังสินค้า"
+    }
+  ],
+  "offers": [
+    {
+      "sku": "CMH-FCL-QUOTE",
+      "name": "ขอใบเสนอราคา นำเข้าเต็มตู้ (FCL)",
+      "price": 0,
+      "billing": "one_time",
+      "service": "fcl",
+      "hero": true,
+      "description": "ประเมินราคานำเข้าเต็มตู้ 20'/40' จากจีน พร้อมพิธีการศุลกากรและเอกสารครบในนามบริษัทของคุณ",
+      "stripePriceId": null,
+      "hubspotProductId": "331997303525"
+    },
+    {
+      "sku": "CMH-LCL-QUOTE",
+      "name": "ขอใบเสนอราคา นำเข้ารวมตู้ (LCL)",
+      "price": 0,
+      "billing": "one_time",
+      "service": "lcl",
+      "hero": false,
+      "description": "ประเมินราคานำเข้าแบบรวมตู้ คิดตามปริมาตร (CBM) เหมาะกับของที่ยังไม่เต็มตู้",
+      "stripePriceId": null,
+      "hubspotProductId": "331906401987"
+    },
+    {
+      "sku": "CMH-CONSULT",
+      "name": "ปรึกษานำเข้าถูกต้องฟรี",
+      "price": 0,
+      "billing": "one_time",
+      "service": "customs",
+      "hero": false,
+      "description": "คุยกับทีมงานมืออาชีพ ประเมินว่าธุรกิจของคุณควรนำเข้าแบบไหน ไม่มีค่าใช้จ่าย",
+      "stripePriceId": null,
+      "hubspotProductId": "332064666327"
+    }
+  ],
+  "dealProperties": [
+    {
+      "name": "location",
+      "label": "ปลายทางที่ต้องการ",
+      "type": "enumeration",
+      "fieldType": "select",
+      "optionsFrom": "locations"
+    },
+    {
+      "name": "service_interest",
+      "label": "บริการที่สนใจ",
+      "type": "enumeration",
+      "fieldType": "select",
+      "optionsFrom": "services"
+    },
+    {
+      "name": "package",
+      "label": "แพ็กเกจ (SKU)",
+      "type": "string",
+      "fieldType": "text"
+    },
+    {
+      "name": "source_page",
+      "label": "หน้าที่มาจาก",
+      "type": "string",
+      "fieldType": "text"
+    }
+  ],
+  "hubspot": {
+    "pipeline": "default",
+    "stageOnLead": "appointmentscheduled",
+    "stageOnCheckout": null,
+    "stageOnPaid": "closedwon",
+    "stageIds": {
+      "lead": "appointmentscheduled",
+      "quoted": "qualifiedtobuy",
+      "negotiating": "presentationscheduled",
+      "won": "closedwon",
+      "lost": "closedlost"
+    },
+    "dealToContactAssociationTypeId": 3,
+    "pipelineSetup": {
+      "mode": "adopt",
+      "label": "CMH Logistics — Salepage",
+      "stages": [
+        {
+          "key": "lead",
+          "label": "ขอใบเสนอราคาจากหน้าเพจ",
+          "probability": 0.2,
+          "use": "onLead"
+        },
+        {
+          "key": "quoted",
+          "label": "ส่งใบเสนอราคาแล้ว",
+          "probability": 0.4
+        },
+        {
+          "key": "negotiating",
+          "label": "กำลังเจรจา / รอตัดสินใจ",
+          "probability": 0.6
+        },
+        {
+          "key": "won",
+          "label": "ตกลงใช้บริการ",
+          "closed": "won",
+          "use": "onPaid"
+        },
+        {
+          "key": "lost",
+          "label": "ไม่ไปต่อ",
+          "closed": "lost"
+        }
+      ]
+    }
+  }
+}
