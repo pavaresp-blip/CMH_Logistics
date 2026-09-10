@@ -40,9 +40,11 @@ body::before{
 }
 .wrap{max-width:var(--wrap);margin:0 auto;padding-inline:40px;position:relative;z-index:1}
 section{padding-block:96px}
+section[id],[id]{scroll-margin-top:90px}
 .tint{background:var(--surface-tint)}
 h1,h2,h3{font-family:"Bai Jamjuree",system-ui,sans-serif;letter-spacing:-.01em;text-wrap:balance}
-h1{font-weight:700;font-size:56px;line-height:1.1}
+h1{font-weight:700;font-size:52px;line-height:1.12}
+.hero h1 .l2{white-space:nowrap}
 h2{font-weight:700;font-size:40px;line-height:1.18;margin-bottom:16px}
 h3{font-weight:600;font-size:22px;line-height:1.3;margin-bottom:10px}
 p{max-width:65ch}
@@ -86,7 +88,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(8,25,42,.92);
 .hero-bg img{width:100%;height:100%;object-fit:cover}
 .hero-bg::after{content:"";position:absolute;inset:0;
   background:linear-gradient(96deg,#08192Af7 0%,#08192Aeb 44%,#08192Ab8 100%)}
-.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.12fr .88fr;gap:56px;align-items:center}
 .hero h1{margin-bottom:20px}
 .hero .lede{margin-bottom:28px}
 .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:26px}
@@ -231,7 +233,8 @@ footer a{color:var(--accent-2)}
   body{font-size:16px}
   .wrap{padding-inline:20px}
   section{padding-block:56px}
-  h1{font-size:34px}h2{font-size:27px}h3{font-size:20px}
+  h1{font-size:31px}h2{font-size:27px}h3{font-size:20px}
+  .hero h1 .l2{white-space:normal}
   .lede{font-size:17px}
   .proof{grid-template-columns:repeat(2,1fr);gap:26px}
   .proof .n{font-size:32px}
@@ -268,7 +271,7 @@ footer a{color:var(--accent-2)}
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">นำเข้าจีน–ไทย · เต็มตู้ และ รวมตู้</span>
-      <h1>นำเข้าจากจีนอย่างถูกต้อง<br>ภาษีที่คุณจ่าย ใช้ได้เต็มจำนวน</h1>
+      <h1>นำเข้าจากจีนอย่างถูกต้อง<br><span class="l2">ภาษีที่คุณจ่าย ใช้ได้เต็มจำนวน</span></h1>
       <p class="lede">ใบขนสินค้าออกในนามบริษัทของคุณเอง ใช้ VAT และเครดิตภาษีได้เต็ม
         ไม่ใช่ฝากขนใต้หัวคนอื่น — ดูแลครบตั้งแต่ต้นทางจีนถึงหน้าโรงงาน</p>
       <div class="hero-cta">
@@ -293,7 +296,7 @@ footer a{color:var(--accent-2)}
         </div>
         <div class="field">
           <label for="e1">อีเมล</label>
-          <input id="e1" name="email" type="email" autocomplete="email" placeholder="เช่น somchai@company.co.th" required>
+          <input id="e1" name="email" type="email" autocomplete="email" placeholder="เช่น name@company.com" required>
           <span class="err" data-for="email"></span>
         </div>
         <div class="field">

@@ -6,9 +6,9 @@
 | 1 Offer building | ✅ Gate B ผ่าน | `offer-building.md` |
 | 2 Design guide + wireframe | ✅ เสร็จ | `design-guide.md` + `wireframe-copywriting.md` (ส่วน A) |
 | 3 Copywriting | ✅ Gate C ผ่าน | `wireframe-copywriting.md` (ส่วน B) |
-| 4 Assets prep | ⬜ | |
-| 5a Build | ⬜ | |
-| 5b Preview + CRO | ⬜ | |
+| 4 Assets prep | ✅ เสร็จ | `manifest.md` · 10 ไฟล์ 888KB (Pixabay) |
+| 5a Build | ✅ เสร็จ | `lib/` `api/lead.js` `public/index.html` |
+| 5b Preview + CRO | ✅ เสร็จ — **รอ Gate D** | `cro-report.md` ≈8.1/10 |
 | 5c Production | ⬜ | |
 
 ## Context ที่ใช้
